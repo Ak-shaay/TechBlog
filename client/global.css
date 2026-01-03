@@ -1,0 +1,211 @@
+/** @import must precede all other statements */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /**
+   * Tailwind CSS theme
+   * tailwind.config.ts expects the following color variables to be expressed as HSL values.
+   * A different format will require also updating the theme in tailwind.config.ts.
+  */
+  :root {
+    /* Light mode - Clean, minimal tech aesthetic */
+    --background: 0 0% 100%;
+    --foreground: 214 32% 16%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 214 32% 16%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 214 32% 16%;
+
+    /* Modern tech blue primary */
+    --primary: 217 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Soft secondary - light gray */
+    --secondary: 213 13% 94%;
+    --secondary-foreground: 214 32% 16%;
+
+    /* Muted states */
+    --muted: 213 13% 94%;
+    --muted-foreground: 215 14% 47%;
+
+    /* Vibrant accent for CTAs */
+    --accent: 262 100% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Borders and inputs */
+    --border: 213 13% 89%;
+    --input: 213 13% 94%;
+    --ring: 217 100% 50%;
+
+    --radius: 0.5rem;
+
+    /* Sidebar colors */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 214 32% 16%;
+    --sidebar-primary: 217 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 262 100% 55%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 213 13% 89%;
+    --sidebar-ring: 217 100% 50%;
+
+    /* Code block colors */
+    --code-bg: 213 13% 94%;
+    --code-text: 214 32% 16%;
+  }
+
+  .dark {
+    /* Dark mode - Professional dark theme */
+    --background: 214 32% 8%;
+    --foreground: 0 0% 95%;
+
+    --card: 214 32% 13%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 214 32% 13%;
+    --popover-foreground: 0 0% 95%;
+
+    /* Keep bright blue for primary */
+    --primary: 217 100% 60%;
+    --primary-foreground: 214 32% 8%;
+
+    --secondary: 214 32% 20%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 214 32% 20%;
+    --muted-foreground: 215 14% 60%;
+
+    /* Vibrant accent */
+    --accent: 262 100% 65%;
+    --accent-foreground: 214 32% 8%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 32% 20%;
+    --input: 214 32% 20%;
+    --ring: 217 100% 60%;
+
+    --sidebar-background: 214 32% 8%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 217 100% 60%;
+    --sidebar-primary-foreground: 214 32% 8%;
+    --sidebar-accent: 262 100% 65%;
+    --sidebar-accent-foreground: 214 32% 8%;
+    --sidebar-border: 214 32% 20%;
+    --sidebar-ring: 217 100% 60%;
+
+    /* Code block colors for dark mode */
+    --code-bg: 214 32% 20%;
+    --code-text: 0 0% 95%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Headings */
+  h1 {
+    @apply text-4xl font-bold tracking-tight;
+  }
+
+  h2 {
+    @apply text-3xl font-bold tracking-tight;
+  }
+
+  h3 {
+    @apply text-2xl font-bold tracking-tight;
+  }
+
+  h4 {
+    @apply text-xl font-semibold tracking-tight;
+  }
+
+  h5 {
+    @apply text-lg font-semibold;
+  }
+
+  h6 {
+    @apply text-base font-semibold;
+  }
+
+  /* Body text */
+  p {
+    @apply leading-7;
+  }
+
+  /* Links */
+  a {
+    @apply text-primary hover:text-primary/90 underline;
+  }
+
+  :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Code blocks */
+  pre,
+  code {
+    overflow-x: auto;
+    white-space: pre;
+    font-family: "Fira Code", "Courier New", monospace;
+  }
+
+  code {
+    @apply bg-code-bg text-code-text rounded px-1.5 py-0.5 text-sm;
+  }
+
+  pre > code {
+    @apply bg-code-bg text-code-text block p-4 rounded-lg text-sm leading-relaxed;
+  }
+
+  /* Article content typography */
+  article p {
+    @apply mb-4;
+  }
+
+  article h2 {
+    @apply mt-8 mb-4;
+  }
+
+  article h3 {
+    @apply mt-6 mb-3;
+  }
+
+  /* Lists */
+  ul, ol {
+    @apply ml-6 space-y-2;
+  }
+
+  ul {
+    @apply list-disc;
+  }
+
+  ol {
+    @apply list-decimal;
+  }
+
+  li {
+    @apply leading-7;
+  }
+
+  blockquote {
+    @apply border-l-4 border-primary pl-4 italic text-muted-foreground;
+  }
+}
