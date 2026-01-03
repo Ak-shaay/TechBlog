@@ -1,16 +1,57 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Zap, Code, Shield, Cloud, Sparkles, BookOpen, Inbox } from "lucide-react";
 import Layout from "@/components/Layout";
+import { SubscribeForm } from "@/components/SubscribeForm";
+
 import BlogCard from "@/components/BlogCard";
 import CategoryChip from "@/components/CategoryChip";
-import { blogPosts, categories } from "@/data/blog-posts";
+import { useEffect, useState } from "react";
+import SEO from "@/components/SEO";
 
 export default function Index() {
-  const featuredPosts = blogPosts.filter((post) => post.featured);
-  const latestPosts = blogPosts.slice(0, 3);
+  const [posts, setPosts] = useState<any[]>([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch('/api/blogs')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setPosts(data);
+      })
+      .catch(err => console.error(err));
+  }, []);
+
+  const stripMarkdown = (markdown: string) => {
+    if (!markdown) return "";
+    return markdown
+      .replace(/[#*`_~]/g, '') // Remove simple chars
+      .replace(/!\[.*?\]\(.*?\)/g, '') // Remove images
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Keep link text
+      .replace(/\n+/g, ' ') // Replace newlines with spaces
+      .trim();
+  };
+
+  const mapPost = (post: any) => ({
+    slug: post.slug || post._id,
+    title: post.title,
+    excerpt: post.excerpt || stripMarkdown(post.content).substring(0, 150) + "...",
+    date: post.createdAt,
+    category: post.category || "General",
+    author: post.author?.username || "Unknown",
+    image: post.image || "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=800",
+    readTime: post.content ? `${Math.ceil(post.content.split(' ').length / 200)} min read` : "1 min read",
+    featured: false
+  });
+
+  const featuredPosts = posts.slice(0, 1).map(mapPost);
+  const latestPosts = posts.slice(0, 3).map(mapPost); // Just show first 3 as latest/featured overlay logic might differ
 
   return (
     <Layout>
+      <SEO
+        title="Home"
+        description="Insights on Modern Tech & Software Development. Deep dives into AI, web development, cloud infrastructure, and security."
+      />
       {/* Hero Section */}
       <section className="border-b border-border bg-gradient-to-br from-background via-background to-card">
         <div className="container mx-auto max-w-6xl px-4 py-20 sm:py-32">
@@ -24,7 +65,7 @@ export default function Index() {
               Insights on Modern Tech & Software Development
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 leading-relaxed max-w-2xl mx-auto">
-              Deep dives into AI, web development, cloud infrastructure, security, and emerging technologies. 
+              Deep dives into AI, web development, cloud infrastructure, security, and emerging technologies.
               Stay ahead with expert analysis and practical insights.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -76,23 +117,37 @@ export default function Index() {
           <div className="flex flex-wrap gap-3">
             <CategoryChip
               name="All Articles"
-              count={blogPosts.length}
+              count={posts.length}
               isSelected={true}
               icon={<BookOpen className="h-4 w-4" />}
+              onClick={() => navigate('/blog')}
             />
-            {[
-              { name: "AI & ML", icon: <Zap className="h-4 w-4" /> },
-              { name: "Web Dev", icon: <Code className="h-4 w-4" /> },
-              { name: "Security", icon: <Shield className="h-4 w-4" /> },
-              { name: "Cloud", icon: <Cloud className="h-4 w-4" /> },
-            ].map((cat) => (
-              <CategoryChip
-                key={cat.name}
-                name={cat.name}
-                icon={cat.icon}
-                count={categories.find((c) => c.name === cat.name)?.count || 0}
-              />
-            ))}
+            {(() => {
+              const catMap = new Map<string, number>();
+              posts.forEach((post) => {
+                const cat = post.category || 'General';
+                catMap.set(cat, (catMap.get(cat) || 0) + 1);
+              });
+              return Array.from(catMap.entries()).map(([name, count]) => {
+                let Icon = Zap;
+                const lowerName = name.toLowerCase();
+                if (lowerName.includes('web')) Icon = Code;
+                else if (lowerName.includes('security')) Icon = Shield;
+                else if (lowerName.includes('cloud')) Icon = Cloud;
+                else if (lowerName.includes('ai') || lowerName.includes('machine')) Icon = Zap;
+                else Icon = Sparkles;
+
+                return (
+                  <CategoryChip
+                    key={name}
+                    name={name}
+                    icon={<Icon className="h-4 w-4" />}
+                    count={count}
+                    onClick={() => navigate(`/blog?category=${encodeURIComponent(name)}`)}
+                  />
+                );
+              });
+            })()}
           </div>
         </div>
       </section>
@@ -142,21 +197,7 @@ export default function Index() {
           <p className="text-lg text-muted-foreground mb-8">
             Subscribe to our newsletter for weekly insights on technology, development, and innovation.
           </p>
-          <form className="flex flex-col sm:flex-row gap-3" onSubmit={(e) => e.preventDefault()}>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              required
-            />
-            <button
-              type="submit"
-              className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap flex items-center justify-center gap-2"
-            >
-              <Sparkles className="h-4 w-4" />
-              Subscribe
-            </button>
-          </form>
+          <SubscribeForm className="max-w-md mx-auto" variant="hero" />
           <p className="text-xs text-muted-foreground mt-4">
             We respect your privacy. Unsubscribe at any time.
           </p>

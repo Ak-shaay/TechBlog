@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, User } from "lucide-react";
 
 interface BlogCardProps {
   slug: string;
@@ -7,9 +7,12 @@ interface BlogCardProps {
   excerpt: string;
   date: string;
   category: string;
-  author: string;
+  author: {
+    name: string;
+    image?: string;
+  };
   image?: string;
-  readTime: number;
+  readTime: string;
   featured?: boolean;
 }
 
@@ -50,7 +53,7 @@ export default function BlogCard({
             <span className="text-xs font-semibold px-3 py-1 rounded-full bg-accent/10 text-accent">
               {category}
             </span>
-            <span className="text-xs text-muted-foreground">{readTime} min read</span>
+            <span className="text-xs text-muted-foreground">{readTime}</span>
           </div>
           <h3 className="text-2xl sm:text-3xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">
             {title}
@@ -58,7 +61,12 @@ export default function BlogCard({
           <p className="text-base text-muted-foreground mb-4">{excerpt}</p>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span>{author}</span>
+              {author.image ? (
+                <img src={author.image} alt={author.name} className="w-6 h-6 rounded-full object-cover" />
+              ) : (
+                <User className="w-4 h-4" />
+              )}
+              <span>{author.name}</span>
               <span>•</span>
               <span>{formattedDate}</span>
             </div>
@@ -88,7 +96,7 @@ export default function BlogCard({
           <span className="text-xs font-semibold px-2 py-1 rounded-full bg-accent/10 text-accent">
             {category}
           </span>
-          <span className="text-xs text-muted-foreground">{readTime} min</span>
+          <span className="text-xs text-muted-foreground">{readTime}</span>
         </div>
         <h3 className="text-lg sm:text-xl font-bold mb-2 text-foreground group-hover:text-primary transition-colors line-clamp-2">
           {title}
@@ -96,7 +104,12 @@ export default function BlogCard({
         <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{excerpt}</p>
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
-            <span>{author}</span>
+            {author.image ? (
+              <img src={author.image} alt={author.name} className="w-5 h-5 rounded-full object-cover" />
+            ) : (
+              <User className="w-3 h-3" />
+            )}
+            <span>{author.name}</span>
             <span>•</span>
             <span>{formattedDate}</span>
           </div>

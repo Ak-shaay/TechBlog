@@ -1,18 +1,59 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import Layout from "@/components/Layout";
 import BlogCard from "@/components/BlogCard";
-import CategoryChip from "@/components/CategoryChip";
-import { blogPosts, categories } from "@/data/blog-posts";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { toast } from "sonner";
+import SEO from "@/components/SEO";
 
 const POSTS_PER_PAGE = 6;
 
 export default function Blog() {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedCategory = searchParams.get("category") || "";
-  const [currentPage, setCurrentPage] = useState(1);
+  // Initialize page from URL
+  const pageParam = parseInt(searchParams.get("page") || "1", 10);
+  const [currentPage, setCurrentPage] = useState(pageParam);
   const [searchQuery, setSearchQuery] = useState("");
+  const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [categories, setCategories] = useState<{ name: string, count: number }[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Sync state when URL params change
+  useEffect(() => {
+    setCurrentPage(pageParam);
+  }, [pageParam]);
+
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  const fetchBlogs = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch('/api/blogs');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setBlogPosts(data);
+        // Calculate categories dynamically
+        const catMap = new Map<string, number>();
+        data.forEach((post: any) => {
+          const cat = post.category || 'General';
+          catMap.set(cat, (catMap.get(cat) || 0) + 1);
+        });
+        const catArray = Array.from(catMap.entries()).map(([name, count]) => ({ name, count }));
+        setCategories(catArray);
+      } else {
+        console.error("Invalid data format", data);
+        toast.error("Failed to load blogs");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error fetching blogs");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Filter posts by category and search query
   const filteredPosts = useMemo(() => {
@@ -21,7 +62,7 @@ export default function Blog() {
     // Filter by category
     if (selectedCategory) {
       filtered = filtered.filter((post) =>
-        post.category.toLowerCase() === selectedCategory.toLowerCase()
+        (post.category || 'General').toLowerCase() === selectedCategory.toLowerCase()
       );
     }
 
@@ -29,14 +70,14 @@ export default function Blog() {
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter((post) =>
-        post.title.toLowerCase().includes(query) ||
-        post.excerpt.toLowerCase().includes(query) ||
-        post.tags.some((tag) => tag.toLowerCase().includes(query))
+        post.title?.toLowerCase().includes(query) ||
+        post.excerpt?.toLowerCase().includes(query) ||
+        post.content?.toLowerCase().includes(query)
       );
     }
 
     return filtered;
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, blogPosts]);
 
   // Paginate posts
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
@@ -45,22 +86,48 @@ export default function Blog() {
   const paginatedPosts = filteredPosts.slice(startIndex, endIndex);
 
   const handleCategoryChange = (category: string) => {
-    setSearchParams(category ? { category } : {});
-    setCurrentPage(1);
+    // Reset to page 1 on category change
+    setSearchParams(prev => {
+      const newParams = new URLSearchParams(prev);
+      if (category) newParams.set("category", category);
+      else newParams.delete("category");
+      newParams.set("page", "1");
+      return newParams;
+    });
   };
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
-    setCurrentPage(1);
+    // Reset to page 1 on search
+    setSearchParams(prev => {
+      const newParams = new URLSearchParams(prev);
+      newParams.set("page", "1");
+      return newParams;
+    });
   };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    setSearchParams(prev => {
+      const newParams = new URLSearchParams(prev);
+      newParams.set("page", page.toString());
+      return newParams;
+    });
+    // Scroll behavior handled by effect/router or manual
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  if (loading) return (
+    <Layout>
+      <div className="container mx-auto py-20 text-center">Loading articles...</div>
+    </Layout>
+  );
+
   return (
     <Layout>
+      <SEO
+        title="Blog"
+        description="Explore articles on technology, development, and innovation."
+      />
       {/* Header */}
       <section className="border-b border-border bg-gradient-to-br from-background to-card">
         <div className="container mx-auto max-w-6xl px-4 py-16 sm:py-20">
@@ -94,11 +161,10 @@ export default function Blog() {
               <div className="space-y-2">
                 <button
                   onClick={() => handleCategoryChange("")}
-                  className={`block w-full text-left px-4 py-2 rounded-lg transition-colors font-medium ${
-                    !selectedCategory
-                      ? "bg-primary text-primary-foreground"
-                      : "hover:bg-secondary text-foreground"
-                  }`}
+                  className={`block w-full text-left px-4 py-2 rounded-lg transition-colors font-medium ${!selectedCategory
+                    ? "bg-primary text-primary-foreground"
+                    : "hover:bg-secondary text-foreground"
+                    }`}
                 >
                   All Articles ({blogPosts.length})
                 </button>
@@ -106,11 +172,10 @@ export default function Blog() {
                   <button
                     key={category.name}
                     onClick={() => handleCategoryChange(category.name)}
-                    className={`block w-full text-left px-4 py-2 rounded-lg transition-colors font-medium ${
-                      selectedCategory === category.name
-                        ? "bg-primary text-primary-foreground"
-                        : "hover:bg-secondary text-foreground"
-                    }`}
+                    className={`block w-full text-left px-4 py-2 rounded-lg transition-colors font-medium ${selectedCategory === category.name
+                      ? "bg-primary text-primary-foreground"
+                      : "hover:bg-secondary text-foreground"
+                      }`}
                   >
                     {category.name} ({category.count})
                   </button>
@@ -124,62 +189,53 @@ export default function Blog() {
             {paginatedPosts.length > 0 ? (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-                  {paginatedPosts.map((post) => (
-                    <BlogCard key={post.slug} {...post} />
-                  ))}
+                  {paginatedPosts.map((post) => {
+                    const stripMarkdown = (markdown: string) => { // Keeping here for minimal diff, effectively hoisted by engine anyway but cleaner to move out.
+                      if (!markdown) return "";
+                      return markdown
+                        .replace(/[#*`_~]/g, '')
+                        .replace(/!\[.*?\]\(.*?\)/g, '')
+                        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+                        .replace(/\n+/g, ' ')
+                        .trim();
+                    };
+
+                    return (
+                      <BlogCard
+                        key={post._id}
+                        slug={post.slug || post._id}
+                        title={post.title}
+                        excerpt={post.excerpt || stripMarkdown(post.content).substring(0, 100) + '...'}
+                        date={new Date(post.createdAt).toLocaleDateString()}
+                        category={post.category || 'General'}
+                        author={{
+                          name: post.authorName || 'Unknown',
+                          image: post.authorAvatar
+                        }}
+                        image={post.image}
+                        readTime="5 min read" // Placeholder or calc
+                      />
+                    )
+                  })}
                 </div>
 
                 {/* Pagination */}
                 {totalPages > 1 && (
                   <div className="space-y-4">
-                    {/* Page info */}
-                    <div className="text-sm text-muted-foreground text-center">
-                      Showing {startIndex + 1} to {Math.min(endIndex, filteredPosts.length)} of {filteredPosts.length} articles
-                      {searchQuery && ` (filtered by "${searchQuery}")`}
-                    </div>
-
-                    {/* Pagination controls */}
+                    {/* ... Pagination UI ... */}
                     <div className="flex items-center justify-center gap-2">
                       <button
                         onClick={() => handlePageChange(currentPage - 1)}
                         disabled={currentPage === 1}
                         className="p-2 rounded-lg border border-border hover:bg-secondary disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        aria-label="Previous page"
                       >
                         <ChevronLeft className="h-5 w-5" />
                       </button>
-
-                      {/* Page numbers - show max 5 at a time */}
-                      <div className="flex items-center gap-1">
-                        {Array.from({ length: totalPages }, (_, i) => i + 1)
-                          .filter((page) => {
-                            const diff = Math.abs(page - currentPage);
-                            return diff === 0 || diff <= 1 || page === 1 || page === totalPages;
-                          })
-                          .map((page, idx, arr) => (
-                            <div key={page} className="flex items-center gap-1">
-                              {idx > 0 && arr[idx - 1] !== page - 1 && (
-                                <span className="text-muted-foreground">...</span>
-                              )}
-                              <button
-                                onClick={() => handlePageChange(page)}
-                                className={`h-10 w-10 rounded-lg font-medium transition-colors ${
-                                  currentPage === page
-                                    ? "bg-primary text-primary-foreground"
-                                    : "border border-border hover:bg-secondary"
-                                }`}
-                              >
-                                {page}
-                              </button>
-                            </div>
-                          ))}
-                      </div>
-
+                      <span className="text-sm font-medium">Page {currentPage} of {totalPages}</span>
                       <button
                         onClick={() => handlePageChange(currentPage + 1)}
                         disabled={currentPage === totalPages}
                         className="p-2 rounded-lg border border-border hover:bg-secondary disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        aria-label="Next page"
                       >
                         <ChevronRight className="h-5 w-5" />
                       </button>
@@ -192,32 +248,20 @@ export default function Blog() {
                 <h3 className="text-2xl font-bold mb-2">No articles found</h3>
                 <p className="text-muted-foreground mb-6">
                   {searchQuery
-                    ? `No articles match "${searchQuery}". Try a different search term.`
-                    : "Try selecting a different category or check back soon for new content."}
+                    ? `No articles match "${searchQuery}".`
+                    : "Try selecting a different category."}
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  {searchQuery && (
-                    <button
-                      onClick={() => handleSearchChange("")}
-                      className="px-6 py-2 bg-secondary text-foreground font-semibold rounded-lg hover:bg-card border border-border transition-colors"
-                    >
-                      Clear Search
-                    </button>
-                  )}
-                  {selectedCategory && (
-                    <button
-                      onClick={() => handleCategoryChange("")}
-                      className="px-6 py-2 bg-secondary text-foreground font-semibold rounded-lg hover:bg-card border border-border transition-colors"
-                    >
-                      View All Articles
-                    </button>
-                  )}
-                </div>
+                <button
+                  onClick={() => { handleSearchChange(""); handleCategoryChange(""); }}
+                  className="px-6 py-2 bg-secondary text-foreground font-semibold rounded-lg hover:bg-card border border-border transition-colors"
+                >
+                  Clear Filters
+                </button>
               </div>
             )}
           </div>
         </div>
       </div>
-    </Layout>
+    </Layout >
   );
 }

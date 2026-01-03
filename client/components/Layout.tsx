@@ -1,4 +1,12 @@
+import { SubscribeForm } from "./SubscribeForm";
 import { Link } from "react-router-dom";
+// ... imports
+
+// ... Layout component usage remains same ...
+// ...
+
+// Remove the function definition at the end
+
 import { Menu, X, Moon, Sun, Home, BookOpen, Users, Mail, Shield, FileText, AlertCircle, Github, Linkedin, Twitter } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -136,19 +144,25 @@ export default function Layout({ children }: LayoutProps) {
       <footer className="border-t border-border bg-secondary">
         <div className="container mx-auto max-w-6xl px-4 py-16">
           {/* Newsletter Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 pb-12 border-b border-border">
-            {/* Brand */}
-            <div>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-12 pb-12 border-b border-border">
+            {/* Brand & Subscribe */}
+            <div className="lg:col-span-2 space-y-6">
               <div className="flex items-center gap-2 mb-4">
                 <div className="flex h-8 w-8 items-center justify-center rounded bg-primary text-primary-foreground font-bold text-lg">
                   T
                 </div>
                 <span className="font-bold text-lg">TechBlog</span>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
                 Deep dives into modern technology, software development, AI, cloud infrastructure, and cybersecurity.
               </p>
-              <p className="text-xs text-muted-foreground mt-4">
+
+              <div className="space-y-2 max-w-sm">
+                <h4 className="text-sm font-semibold">Subscribe to our newsletter</h4>
+                <SubscribeForm />
+              </div>
+
+              <p className="text-xs text-muted-foreground pt-4">
                 © {new Date().getFullYear()} TechBlog. All rights reserved.
               </p>
             </div>
@@ -231,3 +245,5 @@ export default function Layout({ children }: LayoutProps) {
     </div>
   );
 }
+
+
