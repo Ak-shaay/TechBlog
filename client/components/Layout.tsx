@@ -1,13 +1,7 @@
 import { SubscribeForm } from "./SubscribeForm";
 import { Link } from "react-router-dom";
-// ... imports
 
-// ... Layout component usage remains same ...
-// ...
-
-// Remove the function definition at the end
-
-import { Menu, X, Moon, Sun, Home, BookOpen, Users, Mail, Shield, FileText, AlertCircle, Github, Linkedin, Twitter } from "lucide-react";
+import { Menu, X, Moon, Sun, Home, BookOpen, Users, Mail, Shield, FileText, AlertCircle, Linkedin, Twitter, Instagram, Facebook } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface LayoutProps {
@@ -48,8 +42,9 @@ export default function Layout({ children }: LayoutProps) {
   ];
 
   const socialLinks = [
-    { href: "https://twitter.com", label: "Twitter", icon: Twitter },
-    { href: "https://github.com", label: "GitHub", icon: Github },
+    { href: "https://instagram.com", label: "Instagram", icon: Instagram },
+    { href: "https://twitter.com", label: "Twitter", icon: X },
+    { href: "https://facebook.com", label: "Facebook", icon: Facebook },
     { href: "https://linkedin.com", label: "LinkedIn", icon: Linkedin },
   ];
 
