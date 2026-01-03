@@ -1,4 +1,4 @@
-import express, { Response } from 'express';
+import express from 'express';
 import { Blog } from '../models/Blog';
 import { authenticateToken, AuthRequest } from '../middleware/auth';
 
@@ -66,7 +66,7 @@ router.get('/:idOrSlug', async (req, res) => {
 });
 
 // Create blog (Protected)
-router.post('/', authenticateToken, async (req: AuthRequest, res: Response) => {
+router.post('/', authenticateToken, async (req: AuthRequest, res: express.Response) => {
     try {
         const {
             title,
@@ -115,7 +115,7 @@ router.post('/', authenticateToken, async (req: AuthRequest, res: Response) => {
 });
 
 // Update blog (Protected)
-router.put('/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
+router.put('/:id', authenticateToken, async (req: AuthRequest, res: express.Response) => {
     try {
         const {
             title,
@@ -181,7 +181,7 @@ router.put('/:id', authenticateToken, async (req: AuthRequest, res: Response) =>
 });
 
 // Delete blog (Protected)
-router.delete('/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
+router.delete('/:id', authenticateToken, async (req: AuthRequest, res: express.Response) => {
     try {
         const blog = await Blog.findById(req.params.id);
         if (!blog) return res.status(404).json({ error: 'Blog not found' });
