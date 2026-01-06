@@ -15,9 +15,9 @@ export default function SEO({
     image = 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=800',
     url = window.location.href,
     type = 'website',
-    author = 'TechBlog'
+    author = 'TechTrendsAI'
 }: SEOProps) {
-    const siteTitle = 'TechBlog';
+    const siteTitle = 'TechTrendsAI';
     const fullTitle = `${title} | ${siteTitle}`;
 
     return (

@@ -59,7 +59,7 @@ export default function Layout({ children }: LayoutProps) {
               <div className="flex h-8 w-8 items-center justify-center rounded bg-primary text-primary-foreground font-bold">
                 T
               </div>
-              <span className="hidden font-bold text-lg sm:inline-block">TechBlog</span>
+              <span className="hidden font-bold text-lg sm:inline-block">TechTrendsAI</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -146,7 +146,7 @@ export default function Layout({ children }: LayoutProps) {
                 <div className="flex h-8 w-8 items-center justify-center rounded bg-primary text-primary-foreground font-bold text-lg">
                   T
                 </div>
-                <span className="font-bold text-lg">TechBlog</span>
+                <span className="font-bold text-lg">TechTrendsAI</span>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
                 Deep dives into modern technology, software development, AI, cloud infrastructure, and cybersecurity.
@@ -158,7 +158,7 @@ export default function Layout({ children }: LayoutProps) {
               </div>
 
               <p className="text-xs text-muted-foreground pt-4">
-                © {new Date().getFullYear()} TechBlog. All rights reserved.
+                © {new Date().getFullYear()} TechTrendsAI. All rights reserved.
               </p>
             </div>
 

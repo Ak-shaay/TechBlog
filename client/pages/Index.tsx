@@ -58,7 +58,7 @@ export default function Index() {
           <div className="max-w-3xl mx-auto text-center">
             <div className="inline-block mb-6">
               <span className="px-4 py-2 rounded-full bg-accent/10 text-accent font-semibold text-sm">
-                ✨ Welcome to TechBlog
+                ✨ Welcome to TechTrendsAI
               </span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-foreground leading-tight">

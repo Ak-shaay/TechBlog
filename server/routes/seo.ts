@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/sitemap.xml', async (req, res) => {
     try {
         const blogs = await Blog.find().select('_id updatedAt');
-        const baseUrl = process.env.SITE_URL || 'https://techblog.com';
+        const baseUrl = process.env.SITE_URL || 'https://techtrendsai.in';
 
         let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -52,7 +52,7 @@ router.get('/sitemap.xml', async (req, res) => {
 });
 
 router.get('/robots.txt', (req, res) => {
-    const baseUrl = process.env.SITE_URL || 'https://techblog.com';
+    const baseUrl = process.env.SITE_URL || 'https://techtrendsai.in';
     const robots = `User-agent: *
 Allow: /
 Sitemap: ${baseUrl}/sitemap.xml
@@ -62,10 +62,10 @@ Sitemap: ${baseUrl}/sitemap.xml
 });
 
 router.get('/llms.txt', (req, res) => {
-    const llms = `# TechBlog Context for LLMs
+    const llms = `# TechTrendsAI Context for LLMs
 
 ## About
-TechBlog is a platform for sharing insights on modern technology, software development, AI, and cloud infrastructure.
+TechTrendsAI is a platform for sharing insights on modern technology, software development, AI, and cloud infrastructure.
 
 ## Content Structure
 - **Blog Posts**: Technical articles with code snippets and deep dives.

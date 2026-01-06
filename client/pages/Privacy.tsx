@@ -7,7 +7,7 @@ export default function Privacy() {
         <div className="container mx-auto max-w-4xl px-4 py-16 sm:py-20">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Privacy Policy</h1>
           <p className="text-sm text-muted-foreground">
-            Last updated: {new Date().toLocaleDateString()}
+            Last Updated: January 06, 2026
           </p>
         </div>
       </section>
@@ -15,81 +15,74 @@ export default function Privacy() {
       <div className="container mx-auto max-w-4xl px-4 py-12 sm:py-16">
         <article className="prose dark:prose-invert max-w-none space-y-6">
           <section>
-            <h2>1. Introduction</h2>
+            <h2>Introduction</h2>
             <p>
-              TechBlog ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy 
-              explains how we collect, use, disclose, and safeguard your information when you visit our website.
+              We value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard your data when you visit our website or use our services.
             </p>
           </section>
 
           <section>
-            <h2>2. Information We Collect</h2>
-            <p>We may collect information about you in a variety of ways:</p>
-            <ul>
-              <li><strong>Personal Information:</strong> Name, email address, and other contact information you provide</li>
-              <li><strong>Usage Information:</strong> Pages visited, time spent, and interaction patterns</li>
-              <li><strong>Device Information:</strong> IP address, browser type, and operating system</li>
-              <li><strong>Cookies:</strong> We use cookies to enhance your browsing experience</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2>3. How We Use Your Information</h2>
-            <p>We use the information we collect to:</p>
-            <ul>
-              <li>Improve and maintain our website</li>
-              <li>Send you newsletters and updates (with your consent)</li>
-              <li>Analyze usage patterns and improve user experience</li>
-              <li>Respond to your inquiries and requests</li>
-              <li>Comply with legal obligations</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2>4. Third-Party Services</h2>
+            <h2>Information We Collect</h2>
             <p>
-              We may use third-party services such as Google Analytics to track and analyze website usage. 
-              These services have their own privacy policies, and we encourage you to review them.
+              We may collect personal information such as your name, email address, and social media profile information when you interact with our website or subscribe to updates. We collect only what is necessary to provide our services.
             </p>
           </section>
 
           <section>
-            <h2>5. AdSense</h2>
+            <h2>How We Use Your Information</h2>
             <p>
-              TechBlog uses Google AdSense to display advertisements. Google may use cookies to serve ads based 
-              on your prior visits to our website or other websites. You can opt out of personalized advertising 
-              through Google's Ad Settings.
+              We use the information we collect to communicate important updates via email and provide services that you request. We do not sell, rent, or trade your personal information to third parties.
             </p>
           </section>
 
           <section>
-            <h2>6. Data Security</h2>
+            <h2>Cookies and Tracking</h2>
             <p>
-              We implement reasonable security measures to protect your personal information. However, no method 
-              of transmission over the Internet or electronic storage is completely secure.
+              We use minimal first-party cookies necessary for basic website operation (for example, preference settings). We <strong>do not</strong> use tracking or analytics tools such as Google Analytics, nor do we use remarketing services.
             </p>
           </section>
 
           <section>
-            <h2>7. Your Rights</h2>
+            <h2>Third-Party Advertising (Google AdSense)</h2>
             <p>
-              You have the right to access, update, or delete your personal information. To exercise these rights, 
-              please contact us at contact@techblog.com.
+              We use Google AdSense to serve advertisements on our service. Google, as a third-party vendor, uses cookies (including the DART cookie) to serve ads based on a user&apos;s prior visits to our site and other sites on the internet. This enables Google and its partners to serve personalized ads to our users.
             </p>
           </section>
 
           <section>
-            <h2>8. Changes to This Policy</h2>
+            <h2>Payments</h2>
             <p>
-              We may update this Privacy Policy from time to time. We will notify you of any changes by updating 
-              the "Last updated" date above.
+              Our website does not currently accept payments for products or services.
             </p>
           </section>
 
           <section>
-            <h2>9. Contact Us</h2>
+            <h2>Data Security</h2>
             <p>
-              If you have questions about this Privacy Policy, please contact us at contact@techblog.com
+              We implement appropriate technical and organizational measures to protect your data from unauthorized access, disclosure, or destruction. While we strive to ensure security, no method of transmission over the internet is 100% secure.
+            </p>
+          </section>
+
+          <section>
+            <h2>Children&apos;s Privacy</h2>
+            <p>
+              We do not knowingly collect information from children under the age of 13.
+            </p>
+          </section>
+
+          <section>
+            <h2>Changes to This Privacy Policy</h2>
+            <p>
+              We may update this Privacy Policy periodically. Any changes will be posted on this page with an updated &quot;Last Updated&quot; date to reflect the most recent version.
+            </p>
+          </section>
+
+          <section>
+            <h2>Contact Us</h2>
+            <p>
+              If you have any questions about this Privacy Policy or your personal data, please contact us at{" "}
+              <a href="mailto:creativeshub.tech@gmail.com">creativeshub[dot]tech[at]gmail[dot]com
+              </a>.
             </p>
           </section>
         </article>

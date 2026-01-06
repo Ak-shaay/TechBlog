@@ -17,7 +17,7 @@ const generateSitemap = async () => {
 
         // 2. Fetch Data and Backfill Slugs
         const blogs = await Blog.find().select('_id title slug updatedAt');
-        const baseUrl = process.env.SITE_URL || 'https://techblog.com';
+        const baseUrl = process.env.SITE_URL || 'https://techtrendsai.in';
 
         let updatedCount = 0;
         for (const blog of blogs) {

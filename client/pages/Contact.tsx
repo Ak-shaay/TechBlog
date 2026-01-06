@@ -38,7 +38,7 @@ export default function Contact() {
     <Layout>
       <SEO
         title="Contact Us"
-        description="Get in touch with the TechBlog team."
+        description="Get in touch with the TechTrendsAI team."
       />
       <div className="container mx-auto px-4 py-16 max-w-5xl">
         <div className="text-center mb-16">
@@ -58,7 +58,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-medium">Email</p>
-                    <p className="text-sm text-muted-foreground">contact@techblog.com</p>
+                    <p className="text-sm text-muted-foreground">creativeshub.tech@gmail.com
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -67,10 +68,10 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-medium">Location</p>
-                    <p className="text-sm text-muted-foreground">San Francisco, CA</p>
+                    <p className="text-sm text-muted-foreground">KL, IN</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
+                {/* <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                     <Phone className="w-5 h-5" />
                   </div>
@@ -78,7 +79,7 @@ export default function Contact() {
                     <p className="font-medium">Phone</p>
                     <p className="text-sm text-muted-foreground">+1 (555) 000-0000</p>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

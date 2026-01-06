@@ -6,7 +6,7 @@ export default function About() {
     <Layout>
       <section className="border-b border-border bg-gradient-to-br from-background to-card">
         <div className="container mx-auto max-w-4xl px-4 py-16 sm:py-20">
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">About TechBlog</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4">About TechTrendsAI</h1>
           <p className="text-xl text-muted-foreground">
             Learn more about our mission and expertise in technology.
           </p>
@@ -14,32 +14,54 @@ export default function About() {
       </section>
 
       <div className="container mx-auto max-w-4xl px-4 py-12 sm:py-16">
-        <article className="prose prose-invert max-w-none mb-12">
-          <h2>Our Mission</h2>
-          <p>
-            TechBlog is dedicated to providing high-quality, in-depth articles on modern technology, 
-            software development, artificial intelligence, cloud infrastructure, and cybersecurity.
+        <article className="prose max-w-none mb-12 text-neutral-900 dark:text-neutral-100">
+          <h2 className="text-neutral-900 dark:text-neutral-50">Our Mission</h2>
+          <p className="text-neutral-800 dark:text-neutral-200">
+            TechTrendsAI is dedicated to providing high-quality, in-depth articles on
+            modern technology, software development, artificial intelligence, cloud
+            infrastructure, and cybersecurity.
           </p>
 
-          <h2>What We Cover</h2>
-          <ul>
-            <li><strong>Software Development:</strong> Best practices, design patterns, and modern frameworks</li>
-            <li><strong>AI & Machine Learning:</strong> Applications, tools, and emerging trends</li>
-            <li><strong>Web Technologies:</strong> Frontend, backend, full-stack development</li>
-            <li><strong>Cloud & DevOps:</strong> Infrastructure, containerization, deployment strategies</li>
-            <li><strong>Cybersecurity:</strong> Vulnerabilities, security practices, and threat analysis</li>
-            <li><strong>Tools & Technologies:</strong> Reviews and deep dives into developer tools</li>
+          <h2 className="text-neutral-900 dark:text-neutral-50">What We Cover</h2>
+          <ul className="text-neutral-800 dark:text-neutral-200">
+            <li>
+              <strong className="text-neutral-900 dark:text-neutral-50">Software Development:</strong> Best practices, design patterns,
+              and modern frameworks
+            </li>
+            <li>
+              <strong className="text-neutral-900 dark:text-neutral-50">AI &amp; Machine Learning:</strong> Applications, tools, and
+              emerging trends
+            </li>
+            <li>
+              <strong className="text-neutral-900 dark:text-neutral-50">Web Technologies:</strong> Frontend, backend, full-stack
+              development
+            </li>
+            <li>
+              <strong className="text-neutral-900 dark:text-neutral-50">Cloud &amp; DevOps:</strong> Infrastructure, containerization,
+              deployment strategies
+            </li>
+            <li>
+              <strong className="text-neutral-900 dark:text-neutral-50">Cybersecurity:</strong> Vulnerabilities, security practices, and
+              threat analysis
+            </li>
+            <li>
+              <strong className="text-neutral-900 dark:text-neutral-50">Tools &amp; Technologies:</strong> Reviews and deep dives into
+              developer tools
+            </li>
           </ul>
 
-          <h2>Our Expertise</h2>
-          <p>
-            Our team consists of experienced developers, engineers, and technology specialists with years 
-            of practical experience in their respective fields. We're passionate about sharing knowledge 
-            and helping others stay ahead in the rapidly evolving tech landscape.
+          <h2 className="text-neutral-900 dark:text-neutral-50">Our Expertise</h2>
+          <p className="text-neutral-800 dark:text-neutral-200">
+            Our team consists of experienced developers, engineers, and technology
+            specialists with years of practical experience in their respective fields.
+            We&apos;re passionate about sharing knowledge and helping others stay ahead
+            in the rapidly evolving tech landscape.
           </p>
 
-          <h2>Why Choose TechBlog?</h2>
-          <ul>
+          <h2 className="text-neutral-900 dark:text-neutral-50">
+            Why Choose TechTrendsAI?
+          </h2>
+          <ul className="text-neutral-800 dark:text-neutral-200">
             <li>In-depth technical analysis and practical insights</li>
             <li>Content written by industry experts</li>
             <li>Focus on actionable advice and real-world applications</li>
@@ -47,6 +69,8 @@ export default function About() {
             <li>Quality over quantity - thoroughly researched articles</li>
           </ul>
         </article>
+
+
 
         <div className="bg-card border border-border rounded-lg p-8 text-center">
           <h3 className="text-2xl font-bold mb-4">Want to Know More?</h3>
