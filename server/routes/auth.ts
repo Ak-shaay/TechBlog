@@ -6,18 +6,18 @@ import { User } from '../models/User';
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
-router.post('/register', async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ username, password: hashedPassword });
-        await user.save();
-        res.status(201).json({ message: 'User created' });
-    } catch (error) {
-        console.error('Registration error', error);
-        res.status(500).json({ error: 'Error creating user' });
-    }
-});
+// router.post('/register', async (req, res) => {
+//     try {
+//         const { username, password } = req.body;
+//         const hashedPassword = await bcrypt.hash(password, 10);
+//         const user = new User({ username, password: hashedPassword });
+//         await user.save();
+//         res.status(201).json({ message: 'User created' });
+//     } catch (error) {
+//         console.error('Registration error', error);
+//         res.status(500).json({ error: 'Error creating user' });
+//     }
+// });
 
 router.post('/login', async (req, res) => {
     try {
