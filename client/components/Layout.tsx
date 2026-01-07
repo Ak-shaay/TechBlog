@@ -1,6 +1,6 @@
 import { SubscribeForm } from "./SubscribeForm";
 import { Link } from "react-router-dom";
-
+import Logo from "./Logo";
 import { Menu, X, Moon, Sun, Home, BookOpen, Users, Mail, Shield, FileText, AlertCircle, Linkedin, Twitter, Instagram, Facebook } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -56,9 +56,7 @@ export default function Layout({ children }: LayoutProps) {
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 no-underline hover:opacity-80 transition-opacity">
-              <div className="flex h-8 w-8 items-center justify-center rounded bg-primary text-primary-foreground font-bold">
-                T
-              </div>
+              <Logo />
               <span className="hidden font-bold text-lg sm:inline-block">TechTrendsAI</span>
             </Link>
 
@@ -143,9 +141,7 @@ export default function Layout({ children }: LayoutProps) {
             {/* Brand & Subscribe */}
             <div className="lg:col-span-2 space-y-6">
               <div className="flex items-center gap-2 mb-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded bg-primary text-primary-foreground font-bold text-lg">
-                  T
-                </div>
+                <Logo />
                 <span className="font-bold text-lg">TechTrendsAI</span>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
