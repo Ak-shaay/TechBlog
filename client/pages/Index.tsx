@@ -46,11 +46,27 @@ export default function Index() {
   const featuredPosts = posts.slice(0, 1).map(mapPost);
   const latestPosts = posts.slice(0, 3).map(mapPost); // Just show first 3 as latest/featured overlay logic might differ
 
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "TechTrendsAI",
+    "url": window.location.origin,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${window.location.origin}/blog?q={search_term_string}`
+      },
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
     <Layout>
       <SEO
         title="Home"
         description="Insights on Modern Tech & Software Development. Deep dives into AI, web development, cloud infrastructure, and security."
+        schema={schema}
       />
       {/* Hero Section */}
       <section className="border-b border-border bg-gradient-to-br from-background via-background to-card">

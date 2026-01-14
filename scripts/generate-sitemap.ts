@@ -93,7 +93,7 @@ const generateSitemap = async () => {
 
     // 4. Write to File
     const publicDir = path.join(process.cwd(), 'public');
-    // Ensure public dir exists (it should, but just in case)
+    // Ensure public dir exists
     if (!fs.existsSync(publicDir)) {
       fs.mkdirSync(publicDir);
     }
@@ -102,6 +102,18 @@ const generateSitemap = async () => {
     fs.writeFileSync(filePath, xml);
 
     console.log(`✅ Sitemap generated successfully at: ${filePath}`);
+
+    // Update robots.txt to point to sitemap
+    const robotsPath = path.join(publicDir, 'robots.txt');
+    let robotsContent = '';
+    if (fs.existsSync(robotsPath)) {
+      robotsContent = fs.readFileSync(robotsPath, 'utf8');
+      if (!robotsContent.includes('Sitemap:')) {
+        robotsContent += `\nSitemap: ${baseUrl}/sitemap.xml\n`;
+        fs.writeFileSync(robotsPath, robotsContent);
+        console.log('✅ Updated robots.txt with sitemap reference.');
+      }
+    }
 
   } catch (error) {
     console.error('❌ Error generating sitemap:', error);

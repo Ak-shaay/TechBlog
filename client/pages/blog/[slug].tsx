@@ -6,6 +6,7 @@ import BlogCard from "@/components/BlogCard";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import SEO from "@/components/SEO";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
@@ -27,7 +28,7 @@ export default function BlogPost() {
             date: data.createdAt,
             // Calculate read time roughly
             readTime: data.content ? Math.ceil(data.content.split(' ').length / 200) + " min read" : "1 min read",
-            tags: ["Tech", "Code"], // Mock tags for now or add to model later
+            tags: data.tags || ["Tech", "Code"],
           });
           setLoading(false);
         })
@@ -100,6 +101,28 @@ export default function BlogPost() {
     day: "numeric",
   });
 
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "image": post.image,
+    "author": {
+      "@type": "Person",
+      "name": post.authorName || "TechTrendsAI"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "TechTrendsAI",
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${window.location.origin}/icon.png`
+      }
+    },
+    "datePublished": post.createdAt,
+    "dateModified": post.updatedAt || post.createdAt,
+    "description": post.excerpt || post.content.substring(0, 150)
+  };
+
   return (
     <Layout>
       <SEO
@@ -108,10 +131,17 @@ export default function BlogPost() {
         image={post.image}
         author={post.authorName}
         type="article"
+        schema={schema}
       />
       {/* Article Header */}
       <section className="border-b border-border bg-gradient-to-br from-background to-card">
-        <div className="container mx-auto max-w-4xl px-4 py-12 sm:py-16">
+        <div className="container mx-auto max-w-4xl px-4 py-8 sm:py-12">
+          <Breadcrumbs
+            items={[
+              { label: "Blog", href: "/blog" },
+              { label: post.title },
+            ]}
+          />
           <div className="mb-6">
             <button
               onClick={() => navigate(-1)}

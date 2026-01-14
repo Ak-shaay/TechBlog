@@ -7,6 +7,7 @@ interface SEOProps {
     url?: string;
     type?: string;
     author?: string;
+    schema?: any;
 }
 
 export default function SEO({
@@ -15,7 +16,8 @@ export default function SEO({
     image = 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=800',
     url = window.location.href,
     type = 'website',
-    author = 'TechTrendsAI'
+    author = 'TechTrendsAI',
+    schema
 }: SEOProps) {
     const siteTitle = 'TechTrendsAI';
     const fullTitle = `${title} | ${siteTitle}`;
@@ -27,6 +29,9 @@ export default function SEO({
             <meta name="description" content={description} />
             <meta name="author" content={author} />
             <link rel="canonical" href={url} />
+
+            {/* AdSense readiness (Optional: add verify meta if needed) */}
+            {/* <meta name="google-adsense-account" content="ca-pub-0000000000000000" /> */}
 
             {/* Open Graph / Facebook */}
             <meta property="og:type" content={type} />
@@ -41,6 +46,13 @@ export default function SEO({
             <meta name="twitter:title" content={fullTitle} />
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={image} />
+
+            {/* Structured Data (JSON-LD) */}
+            {schema && (
+                <script type="application/ld+json">
+                    {JSON.stringify(schema)}
+                </script>
+            )}
         </Helmet>
     );
 }
