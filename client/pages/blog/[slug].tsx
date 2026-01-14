@@ -201,7 +201,7 @@ export default function BlogPost() {
           {/* Main Content */}
           <div className="lg:col-span-3">
             {/* Article Body */}
-            <article className="prose dark:prose-invert prose-sm sm:prose-base max-w-none mb-12">
+            <article className="prose dark:prose-invert prose-sm sm:prose-base max-w-none mb-12 text-justify">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
