@@ -92,7 +92,7 @@ const generateSitemap = async () => {
     xml += '</urlset>';
 
     // 4. Write to File
-    const publicDir = path.join(process.cwd(), 'public');
+    const publicDir = path.join(process.cwd(), 'dist/spa');
     // Ensure public dir exists
     if (!fs.existsSync(publicDir)) {
       fs.mkdirSync(publicDir);

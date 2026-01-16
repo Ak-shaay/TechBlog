@@ -8,6 +8,7 @@ interface SEOProps {
     type?: string;
     author?: string;
     schema?: any;
+    noIndex?: boolean;
 }
 
 export default function SEO({
@@ -17,9 +18,11 @@ export default function SEO({
     url = window.location.href,
     type = 'website',
     author = 'TechTrendsAI',
-    schema
+    schema,
+    noIndex = false
 }: SEOProps) {
     const siteTitle = 'TechTrendsAI';
+    const baseUrl = import.meta.env.VITE_SITE_URL || 'https://techtrendsai.in';
     const fullTitle = `${title} | ${siteTitle}`;
 
     return (
@@ -28,7 +31,8 @@ export default function SEO({
             <title>{fullTitle}</title>
             <meta name="description" content={description} />
             <meta name="author" content={author} />
-            <link rel="canonical" href={url} />
+            {noIndex && <meta name="robots" content="noindex, nofollow" />}
+            <link rel="canonical" href={url.startsWith('http') ? url : `${baseUrl}${url}`} />
 
             {/* AdSense readiness (Optional: add verify meta if needed) */}
             {/* <meta name="google-adsense-account" content="ca-pub-0000000000000000" /> */}
@@ -37,8 +41,8 @@ export default function SEO({
             <meta property="og:type" content={type} />
             <meta property="og:title" content={fullTitle} />
             <meta property="og:description" content={description} />
-            <meta property="og:url" content={url} />
-            <meta property="og:image" content={image} />
+            <meta property="og:url" content={url.startsWith('http') ? url : `${baseUrl}${url}`} />
+            <meta property="og:image" content={image.startsWith('http') ? image : `${baseUrl}${image}`} />
             <meta property="og:site_name" content={siteTitle} />
 
             {/* Twitter */}

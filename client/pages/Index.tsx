@@ -46,16 +46,18 @@ export default function Index() {
   const featuredPosts = posts.slice(0, 1).map(mapPost);
   const latestPosts = posts.slice(0, 3).map(mapPost); // Just show first 3 as latest/featured overlay logic might differ
 
+  const baseUrl = import.meta.env.VITE_SITE_URL || 'https://techtrendsai.in';
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "TechTrendsAI",
-    "url": window.location.origin,
+    "url": baseUrl,
+    "description": "Deep dives into AI, web development, cloud infrastructure, and security.",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": `${window.location.origin}/blog?q={search_term_string}`
+        "urlTemplate": `${baseUrl}/blog?q={search_term_string}`
       },
       "query-input": "required name=search_term_string"
     }
@@ -66,6 +68,7 @@ export default function Index() {
       <SEO
         title="Home"
         description="Insights on Modern Tech & Software Development. Deep dives into AI, web development, cloud infrastructure, and security."
+        url="/"
         schema={schema}
       />
       {/* Hero Section */}

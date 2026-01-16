@@ -7,6 +7,7 @@ import { Trash2, Edit, Plus, User as UserIcon, Mail, Users, FileText, Search } f
 import { toast } from 'sonner';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SEO from '@/components/SEO';
 
 const POSTS_PER_PAGE = 5;
 
@@ -149,6 +150,7 @@ const Dashboard = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 p-4 sm:p-8">
+            <SEO title="Dashboard" description="Admin dashboard" noIndex={true} />
             <div className="max-w-6xl mx-auto space-y-8">
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">

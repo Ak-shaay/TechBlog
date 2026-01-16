@@ -11,8 +11,32 @@ interface BreadcrumbsProps {
 }
 
 export default function Breadcrumbs({ items }: BreadcrumbsProps) {
+    const baseUrl = import.meta.env.VITE_SITE_URL || 'https://techtrendsai.in';
+
+    const breadcrumbSchema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": baseUrl
+            },
+            ...items.map((item, index) => ({
+                "@type": "ListItem",
+                "position": index + 2,
+                "name": item.label,
+                "item": item.href ? (item.href.startsWith("http") ? item.href : `${baseUrl}${item.href}`) : undefined,
+            })),
+        ],
+    };
+
     return (
         <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6 overflow-x-auto whitespace-nowrap pb-2 sm:pb-0">
+            <script type="application/ld+json">
+                {JSON.stringify(breadcrumbSchema)}
+            </script>
             <Link
                 to="/"
                 className="flex items-center gap-1 hover:text-primary transition-colors no-underline"

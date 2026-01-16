@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
+import SEO from '@/components/SEO';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -43,6 +44,7 @@ const Login = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-50">
+            <SEO title={isLogin ? "Login" : "Register"} description="Admin authentication page" noIndex={true} />
             <Card className="w-full max-w-md">
                 <CardHeader>
                     <CardTitle>{isLogin ? 'Login' : 'Register'}</CardTitle>

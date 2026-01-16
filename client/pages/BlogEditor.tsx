@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
+import SEO from '@/components/SEO';
 
 const CATEGORIES = ["General", "Web Development", "AI & Machine Learning", "Data Science", "Mobile Development", "DevOps", "Cybersecurity", "Blockchain"];
 
@@ -102,6 +103,7 @@ const BlogEditor = () => {
 
     return (
         <div className="container mx-auto p-8 max-w-3xl">
+            <SEO title={isEdit ? "Edit Blog" : "Create Blog"} description="Admin blog editor" noIndex={true} />
             <Card>
                 <CardHeader>
                     <CardTitle>{isEdit ? 'Edit Blog' : 'Create New Blog'}</CardTitle>
@@ -201,6 +203,7 @@ const BlogEditor = () => {
                                 <Button type="button" variant="outline" size="sm" onClick={() => setContent(prev => prev + '**Bold Text** ')}>Bold</Button>
                                 <Button type="button" variant="outline" size="sm" onClick={() => setContent(prev => prev + '*Italic Text* ')}>Italic</Button>
                                 <Button type="button" variant="outline" size="sm" onClick={() => setContent(prev => prev + '\n![Image Description](https://example.com/image.jpg)\n')}>Insert Image</Button>
+                                <Button type="button" variant="outline" size="sm" onClick={() => setContent(prev => prev + '\n| Header 1 | Header 2 |\n| -------- | -------- |\n| Row 1    | Data     |\n| Row 2    | Data     |\n')}>Table</Button>
                             </div>
                             <textarea
                                 placeholder="Write your blog content here... Use Markdown for styling."
