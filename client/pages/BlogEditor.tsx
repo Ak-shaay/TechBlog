@@ -197,11 +197,13 @@ const BlogEditor = () => {
 
                         <div className="space-y-2">
                             <label className="text-sm font-medium">Content (Markdown Supported)</label>
-                            <div className="flex gap-2 mb-2 p-2 bg-secondary/30 rounded-md">
+                            <div className="flex flex-wrap gap-2 mb-2 p-2 bg-secondary/30 rounded-md">
                                 <Button type="button" variant="outline" size="sm" onClick={() => setContent(prev => prev + '\n## New Subheading\n')}>H2</Button>
                                 <Button type="button" variant="outline" size="sm" onClick={() => setContent(prev => prev + '\n### New Section\n')}>H3</Button>
                                 <Button type="button" variant="outline" size="sm" onClick={() => setContent(prev => prev + '**Bold Text** ')}>Bold</Button>
                                 <Button type="button" variant="outline" size="sm" onClick={() => setContent(prev => prev + '*Italic Text* ')}>Italic</Button>
+                                <Button type="button" variant="outline" size="sm" onClick={() => setContent(prev => prev + '\n- List item 1\n- List item 2\n- List item 3\n')}>Bullet List</Button>
+                                <Button type="button" variant="outline" size="sm" onClick={() => setContent(prev => prev + '\n1. First item\n2. Second item\n3. Third item\n')}>Numbered List</Button>
                                 <Button type="button" variant="outline" size="sm" onClick={() => setContent(prev => prev + '\n![Image Description](https://example.com/image.jpg)\n')}>Insert Image</Button>
                                 <Button type="button" variant="outline" size="sm" onClick={() => setContent(prev => prev + '\n| Header 1 | Header 2 |\n| -------- | -------- |\n| Row 1    | Data     |\n| Row 2    | Data     |\n')}>Table</Button>
                             </div>

@@ -241,6 +241,15 @@ export default function BlogPost() {
                     const id = generateId(String(children));
                     return <h3 id={id} {...props} className="scroll-mt-24 text-xl font-semibold mb-4">{children}</h3>;
                   },
+                  ul: ({ node, ...props }) => (
+                    <ul {...props} className="my-6 ml-6 list-disc space-y-2 text-foreground" />
+                  ),
+                  ol: ({ node, ...props }) => (
+                    <ol {...props} className="my-6 ml-6 list-decimal space-y-2 text-foreground" />
+                  ),
+                  li: ({ node, ...props }) => (
+                    <li {...props} className="leading-7 text-muted-foreground" />
+                  ),
                   table: ({ node, ...props }) => (
                     <div className="my-8 w-full overflow-x-auto rounded-xl border border-border shadow-sm overflow-hidden">
                       <table {...props} className="w-full border-collapse text-left text-sm m-0" />
