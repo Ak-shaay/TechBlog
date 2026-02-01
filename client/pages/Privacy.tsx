@@ -7,7 +7,7 @@ export default function Privacy() {
         <div className="container mx-auto max-w-4xl px-4 py-16 sm:py-20">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Privacy Policy</h1>
           <p className="text-sm text-muted-foreground">
-            Last Updated: January 06, 2026
+            Last Updated: February 01, 2026
           </p>
         </div>
       </section>
@@ -38,7 +38,17 @@ export default function Privacy() {
           <section>
             <h2>Cookies and Tracking</h2>
             <p>
-              We use minimal first-party cookies necessary for basic website operation (for example, preference settings). We <strong>do not</strong> use tracking or analytics tools such as Google Analytics, nor do we use remarketing services.
+              We use cookies to enhance your experience, analyze site traffic, and serve personalized advertisements. We use <strong>Ezoic</strong> and <strong>Gatekeeper Consent Manager</strong> to manage user consent and optimize ad delivery. These tools may use cookies to collect information about your browsing behavior.
+            </p>
+          </section>
+
+          <section>
+            <h2>Ezoic and Gatekeeper Consent</h2>
+            <p>
+              This website uses Ezoic to provide personalization and analytic services on this website, as such Ezoic's privacy policy is in effect and can be reviewed <a href="https://www.ezoic.com/privacy-policy/" target="_blank" rel="noopener noreferrer">here</a>.
+            </p>
+            <p>
+              We also use Gatekeeper Consent Manager to ensure compliance with privacy regulations like GDPR and CCPA. You can manage your consent preferences through the consent banner provided on our site.
             </p>
           </section>
 

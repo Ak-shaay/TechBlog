@@ -1,1 +1,5 @@
 google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+
+# Ezoic entries (Replace with your specific entries from Ezoic dashboard)
+# ezoic.com, ..., DIRECT, ...
+
