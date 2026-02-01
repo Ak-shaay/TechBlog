@@ -51,16 +51,40 @@ router.get('/:idOrSlug', async (req, res) => {
         let blog;
 
         // Try finding by slug first
-        blog = await Blog.findOne({ slug: idOrSlug }).populate('author', 'username');
+        blog = await Blog.findOne({ slug: idOrSlug }).populate('author', 'username').populate('influencer');
 
         // If not found and it looks like an ID, try ID
         if (!blog && idOrSlug.match(/^[0-9a-fA-F]{24}$/)) {
-            blog = await Blog.findById(idOrSlug).populate('author', 'username');
+            blog = await Blog.findById(idOrSlug).populate('author', 'username').populate('influencer');
         }
 
         if (!blog) return res.status(404).json({ error: 'Blog not found' });
         res.json(blog);
     } catch (error) {
+        res.status(500).json({ error: 'Error fetching blog' });
+    }
+});
+
+// Get blog by Influencer Slug and Blog Slug
+router.get('/influencer/:influencerSlug/:blogSlug', async (req, res) => {
+    try {
+        const { influencerSlug, blogSlug } = req.params;
+
+        // Find influencer first
+        const { Influencer } = await import('../models/Influencer');
+        const influencer = await Influencer.findOne({ slug: influencerSlug });
+
+        if (!influencer) return res.status(404).json({ error: 'Influencer not found' });
+
+        const blog = await Blog.findOne({
+            slug: blogSlug,
+            influencer: influencer._id
+        }).populate('author', 'username').populate('influencer');
+
+        if (!blog) return res.status(404).json({ error: 'Blog not found' });
+        res.json(blog);
+    } catch (error) {
+        console.error('Error fetching blog by influencer:', error);
         res.status(500).json({ error: 'Error fetching blog' });
     }
 });
@@ -77,7 +101,8 @@ router.post('/', authenticateToken, async (req: AuthRequest, res: express.Respon
             authorName,
             authorAvatar,
             authorBio,
-            authorSocials
+            authorSocials,
+            influencer // New field
         } = req.body;
 
         // Basic image URL validation
@@ -105,6 +130,7 @@ router.post('/', authenticateToken, async (req: AuthRequest, res: express.Respon
             authorBio,
             authorSocials,
             author: req.user.id,
+            influencer: influencer || undefined // New field
         });
         await blog.save();
         res.status(201).json(blog);
@@ -171,6 +197,9 @@ router.put('/:id', authenticateToken, async (req: AuthRequest, res: express.Resp
         blog.authorAvatar = authorAvatar || blog.authorAvatar;
         blog.authorBio = authorBio || blog.authorBio;
         blog.authorSocials = authorSocials || blog.authorSocials;
+        if (req.body.influencer !== undefined) {
+            blog.influencer = req.body.influencer || null;
+        }
 
         await blog.save();
         res.json(blog);

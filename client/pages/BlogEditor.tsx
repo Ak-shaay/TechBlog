@@ -17,6 +17,8 @@ const BlogEditor = () => {
     const [category, setCategory] = useState('General');
     const [image, setImage] = useState('');
     const [excerpt, setExcerpt] = useState('');
+    const [influencers, setInfluencers] = useState<any[]>([]);
+    const [selectedInfluencerId, setSelectedInfluencerId] = useState('');
 
     // Author Details State
     const [authorName, setAuthorName] = useState('');
@@ -39,6 +41,13 @@ const BlogEditor = () => {
             navigate('/login');
             return;
         }
+
+        // Fetch Influencers
+        fetch('/api/influencers')
+            .then(res => res.json())
+            .then(data => setInfluencers(data))
+            .catch(() => toast.error('Error loading influencers'));
+
         if (isEdit) {
             fetch(`/api/blogs/${id}`)
                 .then(res => res.json())
@@ -58,11 +67,32 @@ const BlogEditor = () => {
                         setAuthorSocials(data.authorSocials || {
                             linkedin: '', twitter: '', github: '', instagram: '', facebook: '', youtube: ''
                         });
+                        if (data.influencer) {
+                            setSelectedInfluencerId(typeof data.influencer === 'object' ? data.influencer._id : data.influencer);
+                        }
                     }
                 })
                 .catch(() => toast.error('Error loading blog'));
         }
     }, [id, isAuthenticated, navigate]);
+
+    const handleInfluencerChange = (influencerId: string) => {
+        setSelectedInfluencerId(influencerId);
+        const influencer = influencers.find(i => i._id === influencerId);
+        if (influencer) {
+            setAuthorName(influencer.name);
+            setAuthorAvatar(influencer.avatar || '');
+            setAuthorBio(influencer.bio || '');
+            setAuthorSocials({
+                linkedin: influencer.socials?.linkedin || '',
+                twitter: influencer.socials?.twitter || '',
+                github: influencer.socials?.github || '',
+                instagram: influencer.socials?.instagram || '',
+                facebook: influencer.socials?.facebook || '',
+                youtube: influencer.socials?.youtube || ''
+            });
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -85,7 +115,8 @@ const BlogEditor = () => {
                     authorName,
                     authorAvatar,
                     authorBio,
-                    authorSocials
+                    authorSocials,
+                    influencer: selectedInfluencerId || undefined
                 }),
             });
 
@@ -123,7 +154,7 @@ const BlogEditor = () => {
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Category</label>
                                 <select
-                                    className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
                                     value={category}
                                     onChange={(e) => setCategory(e.target.value)}
                                 >
@@ -132,6 +163,21 @@ const BlogEditor = () => {
                                     ))}
                                 </select>
                             </div>
+                        </div>
+
+                        <div className="space-y-2 p-4 border rounded-md bg-primary/5">
+                            <label className="text-sm font-semibold block mb-2">Assign to Influencer (Optional)</label>
+                            <p className="text-xs text-muted-foreground mb-3">Selecting an influencer will auto-populate author details and set up the Ezoic tracking URL structure.</p>
+                            <select
+                                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring"
+                                value={selectedInfluencerId}
+                                onChange={(e) => handleInfluencerChange(e.target.value)}
+                            >
+                                <option value="">No Influencer (Direct Post)</option>
+                                {influencers.map(inf => (
+                                    <option key={inf._id} value={inf._id}>{inf.name} ({inf.slug})</option>
+                                ))}
+                            </select>
                         </div>
 
                         {/* Author Section */}

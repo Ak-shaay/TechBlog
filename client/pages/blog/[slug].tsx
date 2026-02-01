@@ -9,7 +9,7 @@ import SEO from "@/components/SEO";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 export default function BlogPost() {
-  const { slug } = useParams<{ slug: string }>();
+  const { influencerSlug, slug } = useParams<{ influencerSlug?: string, slug: string }>();
   const navigate = useNavigate();
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -17,12 +17,25 @@ export default function BlogPost() {
   useEffect(() => {
     if (slug) {
       setLoading(true);
-      fetch(`/api/blogs/${slug}`)
+      const url = influencerSlug
+        ? `/api/blogs/influencer/${influencerSlug}/${slug}`
+        : `/api/blogs/${slug}`;
+
+      fetch(url)
         .then(res => {
           if (!res.ok) throw new Error("Not found");
           return res.json();
         })
         .then(data => {
+          // If we loaded via legacy route but it HAS an influencer, redirect to the new SEO-friendly Ezoic URL
+          if (!influencerSlug && data.influencer) {
+            const infSlug = typeof data.influencer === 'object' ? data.influencer.slug : data.influencer;
+            if (infSlug) {
+              navigate(`/blogs/${infSlug}/${slug}`, { replace: true });
+              return;
+            }
+          }
+
           setPost({
             ...data,
             date: data.createdAt,
@@ -34,7 +47,7 @@ export default function BlogPost() {
         })
         .catch(() => setLoading(false));
     }
-  }, [slug]);
+  }, [slug, influencerSlug]);
 
   // Next/Prev/Related logic placeholder
   const previousPost = null;
@@ -128,13 +141,15 @@ export default function BlogPost() {
     "@type": "BlogPosting",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `${baseUrl}/blog/${slug}`
+      "@id": post.influencer
+        ? `${baseUrl}/blogs/${post.influencer.slug}/${slug}`
+        : `${baseUrl}/blog/${slug}`
     },
     "headline": post.title,
     "image": post.image,
     "author": {
       "@type": "Person",
-      "name": post.authorName || "TechTrendsAI"
+      "name": post.influencer?.name || post.authorName || "TechTrendsAI"
     },
     "publisher": {
       "@type": "Organization",
@@ -155,9 +170,9 @@ export default function BlogPost() {
         title={post.title}
         description={post.excerpt || post.content.substring(0, 150)}
         image={post.image}
-        author={post.authorName}
+        author={post.influencer?.name || post.authorName}
         type="article"
-        url={`/blog/${slug}`}
+        url={post.influencer ? `/blogs/${post.influencer.slug}/${slug}` : `/blog/${slug}`}
         schema={schema}
       />
       {/* Article Header */}

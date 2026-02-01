@@ -42,7 +42,8 @@ const App = () => (
               <Route path="/dashboard/new" element={<BlogEditor />} />
               <Route path="/dashboard/edit/:id" element={<BlogEditor />} />
               <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/blogs/:influencerSlug/:slug" element={<BlogPost />} />
+              <Route path="/blog/:slug" element={<BlogPost />} /> {/* Keeping this for backward compatibility and internal consistency for now */}
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/privacy" element={<Privacy />} />

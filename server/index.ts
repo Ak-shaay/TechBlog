@@ -5,6 +5,8 @@ import { connectDB } from "./db";
 import authRoutes from "./routes/auth";
 import blogRoutes from "./routes/blog";
 import generalRoutes from "./routes/general"; // Added this line
+import influencerRoutes from "./routes/influencer";
+import revenueRoutes from "./routes/revenue";
 import { handleDemo } from "./routes/demo";
 
 export function createServer() {
@@ -21,6 +23,8 @@ export function createServer() {
   // API Routes
   app.use("/api/auth", authRoutes);
   app.use("/api/blogs", blogRoutes);
+  app.use("/api/influencers", influencerRoutes);
+  app.use("/api/revenue", revenueRoutes);
   app.use("/api", generalRoutes); // Added this line
 
   // Example API routes
