@@ -149,7 +149,9 @@ export default function BlogPost() {
     "image": post.image,
     "author": {
       "@type": "Person",
-      "name": post.influencer?.name || post.authorName || "TechTrendsAI"
+      "name": post.influencer?.name || post.authorName || "TechTrendsAI",
+      "url": post.authorSocials?.linkedin || post.authorSocials?.twitter || post.authorSocials?.instagram || undefined,
+      "sameAs": post.authorSocials ? Object.values(post.authorSocials).filter(url => !!url) : []
     },
     "publisher": {
       "@type": "Organization",

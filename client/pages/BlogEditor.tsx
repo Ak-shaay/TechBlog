@@ -217,6 +217,8 @@ const BlogEditor = () => {
                                     <Input placeholder="Twitter URL" value={authorSocials.twitter} onChange={(e) => setAuthorSocials({ ...authorSocials, twitter: e.target.value })} />
                                     <Input placeholder="GitHub URL" value={authorSocials.github} onChange={(e) => setAuthorSocials({ ...authorSocials, github: e.target.value })} />
                                     <Input placeholder="Instagram URL" value={authorSocials.instagram} onChange={(e) => setAuthorSocials({ ...authorSocials, instagram: e.target.value })} />
+                                    <Input placeholder="Facebook URL" value={authorSocials.facebook} onChange={(e) => setAuthorSocials({ ...authorSocials, facebook: e.target.value })} />
+                                    <Input placeholder="YouTube URL" value={authorSocials.youtube} onChange={(e) => setAuthorSocials({ ...authorSocials, youtube: e.target.value })} />
                                 </div>
                             </div>
                         </div>

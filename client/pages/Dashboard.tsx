@@ -36,6 +36,11 @@ const Dashboard = () => {
     const [infInstagram, setInfInstagram] = useState('');
     const [infEmail, setInfEmail] = useState('');
     const [infBio, setInfBio] = useState('');
+    const [infLinkedin, setInfLinkedin] = useState('');
+    const [infTwitter, setInfTwitter] = useState('');
+    const [infGithub, setInfGithub] = useState('');
+    const [infFacebook, setInfFacebook] = useState('');
+    const [infYoutube, setInfYoutube] = useState('');
 
     // Revenue Form State
     const [showRevenueDialog, setShowRevenueDialog] = useState(false);
@@ -193,7 +198,15 @@ const Dashboard = () => {
                     name: infName,
                     instagramId: infInstagram,
                     email: infEmail,
-                    bio: infBio
+                    bio: infBio,
+                    socials: {
+                        linkedin: infLinkedin,
+                        twitter: infTwitter,
+                        github: infGithub,
+                        facebook: infFacebook,
+                        youtube: infYoutube,
+                        instagram: `https://instagram.com/${infInstagram}`
+                    }
                 })
             });
 
@@ -312,6 +325,87 @@ const Dashboard = () => {
                         <TabsTrigger value="subscribers" className="flex gap-2"><Users className="w-4 h-4" /> Subscribers</TabsTrigger>
                     </TabsList>
 
+                    {/* BLOGS TAB */}
+                    <TabsContent value="blogs" className="space-y-4">
+                        <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
+                            <div className="relative w-full sm:w-72">
+                                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                                <Input
+                                    placeholder="Search blogs..."
+                                    className="pl-8"
+                                    value={blogSearch}
+                                    onChange={(e) => { setBlogSearch(e.target.value); setBlogPage(1); }}
+                                />
+                            </div>
+                            <Link to="/dashboard/new">
+                                <Button><Plus className="mr-2 h-4 w-4" /> Create New</Button>
+                            </Link>
+                        </div>
+
+                        <Card>
+                            <CardContent className="p-0">
+                                {loading ? (
+                                    <div className="p-8 text-center text-muted-foreground">Loading...</div>
+                                ) : filteredBlogs.length === 0 ? (
+                                    <div className="p-12 text-center text-muted-foreground">
+                                        No blogs found.
+                                    </div>
+                                ) : (
+                                    <div className="divide-y">
+                                        {paginatedBlogs.map(blog => (
+                                            <div key={blog._id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 gap-4 hover:bg-muted/50 transition-colors">
+                                                <div className="flex-1">
+                                                    <div className="flex items-center gap-2 mb-1">
+                                                        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                                                            {blog.category || 'General'}
+                                                        </span>
+                                                        <span className="text-xs text-muted-foreground">
+                                                            {new Date(blog.createdAt).toLocaleDateString()}
+                                                        </span>
+                                                    </div>
+                                                    <h3 className="font-semibold text-lg">{blog.title}</h3>
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    <Link to={`/dashboard/edit/${blog._id}`}>
+                                                        <Button variant="ghost" size="icon" className="hover:text-blue-600"><Edit className="h-4 w-4" /></Button>
+                                                    </Link>
+                                                    <Button variant="ghost" size="icon" onClick={() => handleDelete(blog._id)} className="text-destructive hover:bg-red-50">
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </CardContent>
+                        </Card>
+
+                        {/* Pagination */}
+                        {totalPages > 1 && (
+                            <div className="flex justify-center gap-2 mt-4">
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => setBlogPage(p => Math.max(1, p - 1))}
+                                    disabled={blogPage === 1}
+                                >
+                                    Previous
+                                </Button>
+                                <span className="flex items-center px-4 text-sm font-medium">
+                                    Page {blogPage} of {totalPages}
+                                </span>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => setBlogPage(p => Math.min(totalPages, p + 1))}
+                                    disabled={blogPage === totalPages}
+                                >
+                                    Next
+                                </Button>
+                            </div>
+                        )}
+                    </TabsContent>
+
                     {/* INFLUENCERS TAB */}
                     <TabsContent value="influencers" className="space-y-4">
                         <div className="flex justify-between items-center">
@@ -322,6 +416,11 @@ const Dashboard = () => {
                                 setInfInstagram('');
                                 setInfEmail('');
                                 setInfBio('');
+                                setInfLinkedin('');
+                                setInfTwitter('');
+                                setInfGithub('');
+                                setInfFacebook('');
+                                setInfYoutube('');
                                 setShowInfluencerDialog(true);
                             }}>
                                 <Plus className="mr-2 h-4 w-4" /> Add Influencer
@@ -355,6 +454,11 @@ const Dashboard = () => {
                                                         setInfInstagram(inf.instagramId);
                                                         setInfEmail(inf.email || '');
                                                         setInfBio(inf.bio || '');
+                                                        setInfLinkedin(inf.socials?.linkedin || '');
+                                                        setInfTwitter(inf.socials?.twitter || '');
+                                                        setInfGithub(inf.socials?.github || '');
+                                                        setInfFacebook(inf.socials?.facebook || '');
+                                                        setInfYoutube(inf.socials?.youtube || '');
                                                         setShowInfluencerDialog(true);
                                                     }}>
                                                         <Edit className="h-4 w-4" />
@@ -535,32 +639,74 @@ const Dashboard = () => {
                     </TabsContent>
                 </Tabs>
 
-                {/* INFLUENCER DIALOG (Simple Overlay) */}
+                {/* INFLUENCER DIALOG (Responsive Overlay) */}
                 {showInfluencerDialog && (
-                    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-                        <Card className="w-full max-w-md">
-                            <CardHeader><CardTitle>{editingInfluencer ? 'Edit' : 'Add'} Influencer</CardTitle></CardHeader>
-                            <CardContent>
-                                <form onSubmit={handleSaveInfluencer} className="space-y-4">
-                                    <div className="space-y-1">
-                                        <label className="text-sm">Name</label>
-                                        <Input value={infName} onChange={e => setInfName(e.target.value)} required />
+                    <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-2 sm:p-4 backdrop-blur-sm">
+                        <Card className="w-full max-w-lg shadow-2xl max-h-[95vh] flex flex-col dialog-animate">
+                            <CardHeader className="border-b">
+                                <CardTitle>{editingInfluencer ? 'Edit' : 'Add'} Influencer</CardTitle>
+                            </CardHeader>
+                            <CardContent className="overflow-y-auto p-4 sm:p-6 custom-scrollbar">
+                                <form onSubmit={handleSaveInfluencer} className="space-y-6">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div className="space-y-1">
+                                            <label className="text-sm font-medium">Name</label>
+                                            <Input value={infName} onChange={e => setInfName(e.target.value)} required placeholder="e.g. John Doe" />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-sm font-medium">Instagram ID</label>
+                                            <div className="relative">
+                                                <span className="absolute left-3 top-2.5 text-muted-foreground">@</span>
+                                                <Input className="pl-7" value={infInstagram} onChange={e => setInfInstagram(e.target.value)} required placeholder="username" />
+                                            </div>
+                                        </div>
                                     </div>
+
                                     <div className="space-y-1">
-                                        <label className="text-sm">Instagram ID (without @)</label>
-                                        <Input value={infInstagram} onChange={e => setInfInstagram(e.target.value)} required />
+                                        <label className="text-sm font-medium">Email (Optional)</label>
+                                        <Input type="email" value={infEmail} onChange={e => setInfEmail(e.target.value)} placeholder="contact@example.com" />
                                     </div>
+
                                     <div className="space-y-1">
-                                        <label className="text-sm">Email</label>
-                                        <Input value={infEmail} onChange={e => setInfEmail(e.target.value)} />
+                                        <label className="text-sm font-medium">Short Bio</label>
+                                        <textarea
+                                            className="w-full border rounded-md p-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all"
+                                            value={infBio}
+                                            onChange={e => setInfBio(e.target.value)}
+                                            rows={3}
+                                            placeholder="Write a short summary about the influencer..."
+                                        />
                                     </div>
-                                    <div className="space-y-1">
-                                        <label className="text-sm">Short Bio</label>
-                                        <textarea className="w-full border rounded-md p-2 text-sm" value={infBio} onChange={e => setInfBio(e.target.value)} rows={3} />
+
+                                    <div className="space-y-3 pt-2 border-t">
+                                        <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Social Profiles</h3>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div className="space-y-1">
+                                                <label className="text-sm font-medium">LinkedIn URL</label>
+                                                <Input value={infLinkedin} onChange={e => setInfLinkedin(e.target.value)} placeholder="https://linkedin.com/in/..." />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <label className="text-sm font-medium">Twitter URL</label>
+                                                <Input value={infTwitter} onChange={e => setInfTwitter(e.target.value)} placeholder="https://twitter.com/..." />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <label className="text-sm font-medium">GitHub URL</label>
+                                                <Input value={infGithub} onChange={e => setInfGithub(e.target.value)} placeholder="https://github.com/..." />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <label className="text-sm font-medium">Facebook URL</label>
+                                                <Input value={infFacebook} onChange={e => setInfFacebook(e.target.value)} placeholder="https://facebook.com/..." />
+                                            </div>
+                                            <div className="space-y-1 sm:col-span-2">
+                                                <label className="text-sm font-medium">YouTube URL</label>
+                                                <Input value={infYoutube} onChange={e => setInfYoutube(e.target.value)} placeholder="https://youtube.com/@..." />
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="flex gap-2 justify-end pt-4">
+
+                                    <div className="flex gap-3 justify-end pt-4 border-t sticky bottom-0 bg-background pb-2">
                                         <Button type="button" variant="outline" onClick={() => setShowInfluencerDialog(false)}>Cancel</Button>
-                                        <Button type="submit">Save</Button>
+                                        <Button type="submit" className="px-8">{editingInfluencer ? 'Save Changes' : 'Create Influencer'}</Button>
                                     </div>
                                 </form>
                             </CardContent>

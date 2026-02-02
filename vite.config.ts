@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { createServer } from "./server";
 
+// Force reload to pick up server changes: 1
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {

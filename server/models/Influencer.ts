@@ -39,26 +39,32 @@ const influencerSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Auto-generate slug from name before saving
-influencerSchema.pre('save', async function (this: IInfluencer, next) {
+influencerSchema.pre('save', async function (this: any) {
     if (this.isModified('name') || !this.slug) {
+        if (!this.name) throw new Error('Name is required for slug generation');
+
         let baseSlug = this.name
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/(^-|-$)+/g, '');
 
+        if (!baseSlug) baseSlug = 'influencer';
+
         let slug = baseSlug;
         let count = 0;
 
         // Ensure unique slug
-        const InfluencerModel = mongoose.model<IInfluencer>('Influencer');
+        const InfluencerModel = this.constructor as any;
         while (await InfluencerModel.findOne({ slug, _id: { $ne: this._id } })) {
             count++;
             slug = `${baseSlug}-${count}`;
         }
-
         this.slug = slug;
     }
-    next();
 });
 
-export const Influencer: Model<IInfluencer> = mongoose.models.Influencer || mongoose.model<IInfluencer>('Influencer', influencerSchema);
+// Use a more robust model export for local development with hot-reloading
+if (mongoose.models.Influencer) {
+    delete (mongoose.models as any).Influencer;
+}
+export const Influencer: Model<IInfluencer> = mongoose.model<IInfluencer>('Influencer', influencerSchema);

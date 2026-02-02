@@ -36,14 +36,16 @@ router.get('/:slugOrId', async (req, res) => {
 // Create influencer (Protected)
 router.post('/', authenticateToken, async (req: AuthRequest, res: express.Response) => {
     try {
+        console.log('Creating influencer with body:', JSON.stringify(req.body, null, 2));
         const influencer = new Influencer(req.body);
         await influencer.save();
         res.status(201).json(influencer);
     } catch (error: any) {
+        console.error('Error creating influencer:', error);
         if (error.code === 11000) {
             return res.status(400).json({ error: 'Influencer with this name/slug already exists' });
         }
-        res.status(500).json({ error: 'Error creating influencer' });
+        res.status(500).json({ error: error.message || 'Error creating influencer' });
     }
 });
 

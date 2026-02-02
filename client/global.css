@@ -213,3 +213,27 @@
     @apply border-l-4 border-primary pl-4 italic text-muted-foreground;
   }
 }
+
+/* Custom Scrollbar for scrollable areas */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/20 rounded-full;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/40;
+}
+
+/* Simple Fade/Scale Animation for Dialogs */
+@keyframes dialog-zoom {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.dialog-animate {
+  animation: dialog-zoom 0.2s ease-out forwards;
+}
