@@ -104,15 +104,28 @@ const Dashboard = () => {
     const fetchBlogs = async () => {
         const res = await fetch('/api/blogs');
         const data = await res.json();
+
+        // Debug logging to identify the issue
+        console.log('🔍 Fetched blogs from API:', data);
+        console.log('👤 Current user:', user);
+
         // Client-side filter for now since API returns all
         if (data && user?.id) {
             const userBlogs = data.filter((b: any) => {
                 const authorId = typeof b.author === 'object' ? b.author._id : b.author;
-                return authorId === user.id;
+                // Convert both to strings for proper comparison
+                const isMatch = String(authorId) === String(user.id);
+                console.log(`Comparing blog "${b.title}": authorId=${authorId}, userId=${user.id}, match=${isMatch}`);
+                return isMatch;
             });
+            console.log('✅ Filtered user blogs:', userBlogs);
             setBlogs(userBlogs);
+        } else {
+            console.warn('⚠️ No data or user ID available:', { hasData: !!data, userId: user?.id });
+            setBlogs([]);
         }
     };
+
 
     const fetchMessages = async () => {
         const res = await fetch('/api/contact', {
